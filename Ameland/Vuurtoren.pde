@@ -27,7 +27,7 @@ class Vuurtoren {
     this.wit = color(255, 255, 255);
     this.glas = color(255, 255, 220, 230);
     
-    this.lichtkegels = new Lichtkegels(this.x, this.y, this.lampHoogte / 10);
+    this.lichtkegels = new Lichtkegels(this.x, this.y, this.lampHoogte / 5);
   }
   
   void update() {

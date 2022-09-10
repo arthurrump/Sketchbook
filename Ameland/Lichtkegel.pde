@@ -24,7 +24,7 @@ class Lichtkegel {
     fill(255, 255, 15, 100);
 
     quad(
-      this.lampX, this.lampY + this.lampHoogte / 2,
+      this.lampX, this.lampY - this.lampHoogte / 2,
       this.lampX + breedte, this.lampY - straal,
       this.lampX + breedte, this.lampY + straal,
       this.lampX, this.lampY + this.lampHoogte / 2);
