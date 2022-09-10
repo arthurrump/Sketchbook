@@ -8,11 +8,9 @@ class Vuurtoren {
   int lampHoogte;
   int lampBreedte;
   
-  color rood, wit, glas, licht;
+  color rood, wit, glas;
   
-  int lichtkegelBreedte;
-  int lichtkegelStraal;
-  float lichtkegelRotatie;
+  Lichtkegels lichtkegels;
 
   Vuurtoren(int x, int y) {
     this.x = x;
@@ -28,50 +26,30 @@ class Vuurtoren {
     this.rood = color(200, 10, 15);
     this.wit = color(255, 255, 255);
     this.glas = color(255, 255, 220, 230);
-    this.licht = color(255, 255, 15, 100);
     
-    this.lichtkegelRotatie = HALF_PI;
-    this.lichtkegelBreedte = 600;
-    this.lichtkegelStraal = 60;
+    this.lichtkegels = new Lichtkegels(this.x, this.y, this.lampHoogte / 10);
   }
   
   void update() {
-    this.lichtkegelRotatie = (this.lichtkegelRotatie + 0.01) % TWO_PI;
+    this.lichtkegels.draai(0.01);
   }
 
   void display(float licht) {
+    // Bereken locatie van toren en maak een variabele om de breedte
+    // van de huidige ring bij te houden
     int torenTopY = this.y + this.lampHoogte / 2;
     int torenOnderY = torenTopY + this.torenHoogte;
     int ringBreedte = this.torenBreedteOnder;
+    
+    // We tekenen zonder lijnen
     noStroke();
     
+    // Teken de lichtkegel achter de toren als het donker is
     if (licht < 0.5) {
-      blendMode(LIGHTEST);
-      fill(this.licht);
-      if (this.lichtkegelRotatie > PI) {
-        quad(
-          this.x, this.y - this.lampHoogte / 10, 
-          this.x + this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y - this.lichtkegelStraal,
-          this.x + this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y + this.lichtkegelStraal,
-          this.x, this.y + this.lampHoogte / 10);
-        ellipse(
-          this.x + this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y,
-          2 * this.lichtkegelStraal * sin(this.lichtkegelRotatie), 
-          2 * this.lichtkegelStraal);
-      } else {
-        quad(
-          this.x, this.y - this.lampHoogte / 10, 
-          this.x - this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y - this.lichtkegelStraal,
-          this.x - this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y + this.lichtkegelStraal,
-          this.x, this.y + this.lampHoogte / 10);
-        ellipse(
-          this.x - this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y,
-          2 * this.lichtkegelStraal * sin(this.lichtkegelRotatie), 
-          2 * this.lichtkegelStraal);
-      }
-      blendMode(BLEND);
+      lichtkegels.displayAchter();
     }
     
+    // Teken de toren met rode en witte ringen
     for (int i = 1; i <= this.torenRingen; i++) {
       int breedteOnder = ringBreedte;
       ringBreedte = round(lerp(this.torenBreedteOnder, this.torenBreedteBoven, float(i) / this.torenRingen));
@@ -93,6 +71,7 @@ class Vuurtoren {
         this.x + breedteOnder / 2, lerp(torenOnderY, torenTopY, float(i - 1) / this.torenRingen));
     }
     
+    // Teken de railing aan de bovenkant
     float railHoogte = this.torenHoogte / (2 * this.torenRingen);
     float railBreedteOnder = lerp(this.torenBreedteBoven, this.torenBreedteOnder, railHoogte / this.torenHoogte);
     fill(0);
@@ -106,38 +85,18 @@ class Vuurtoren {
       // Rechtsonder
       this.x + railBreedteOnder / 2, torenTopY + railHoogte);
     
+    // Teken het glas van de lamp
     fill(verdonker(this.glas, licht));
     rectMode(CENTER);
     rect(this.x, this.y, this.lampBreedte, this.lampHoogte);
     
+    // Teken het "mutsje" van de vuurtoren
     fill(verdonker(this.rood, licht));
     arc(this.x, this.y - this.lampHoogte / 2, this.lampBreedte, 0.8 * this.lampBreedte, PI, TWO_PI);
     
+    // Teken de lichtkegel voor de vuurtoren
     if (licht < 0.5) {
-      blendMode(LIGHTEST);
-      fill(this.licht);
-      if (this.lichtkegelRotatie <= PI) {
-        quad(
-          this.x, this.y - this.lampHoogte / 10, 
-          this.x + this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y - this.lichtkegelStraal,
-          this.x + this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y + this.lichtkegelStraal,
-          this.x, this.y + this.lampHoogte / 10);
-        ellipse(
-          this.x + this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y,
-          2 * this.lichtkegelStraal * sin(this.lichtkegelRotatie), 
-          2 * this.lichtkegelStraal);
-      } else {
-        quad(
-          this.x, this.y - this.lampHoogte / 10, 
-          this.x - this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y - this.lichtkegelStraal,
-          this.x - this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y + this.lichtkegelStraal,
-          this.x, this.y + this.lampHoogte / 10);
-        ellipse(
-          this.x - this.lichtkegelBreedte * cos(this.lichtkegelRotatie), this.y,
-          2 * this.lichtkegelStraal * sin(this.lichtkegelRotatie), 
-          2 * this.lichtkegelStraal);
-      }
-      blendMode(BLEND);
+      lichtkegels.displayVoor();
     }
   }
 }
