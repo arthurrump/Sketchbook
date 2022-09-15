@@ -27,6 +27,7 @@ class FireParticle {
     colorMode(HSB, 255);
     fill(color((hue * 255 + 128) % 255, 255, 255, lifetime));
     square(0, 0, 4);
+    colorMode(RGB, 255);
     
     popMatrix();
   }
