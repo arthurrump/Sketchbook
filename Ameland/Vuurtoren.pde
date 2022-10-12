@@ -10,7 +10,7 @@ class Vuurtoren {
   
   color rood, wit, glas;
   
-  Lichtkegels lichtkegels;
+  Lamp lamp;
 
   Vuurtoren(int x, int y) {
     this.x = x;
@@ -27,11 +27,11 @@ class Vuurtoren {
     this.wit = color(255, 255, 255);
     this.glas = color(255, 255, 220, 230);
     
-    this.lichtkegels = new Lichtkegels(this.x, this.y, this.lampHoogte / 5);
+    this.lamp = new Lamp(this.x, this.y, this.lampHoogte / 5);
   }
   
   void update() {
-    this.lichtkegels.draai(0.01);
+    this.lamp.draai(0.01);
   }
 
   void display(float licht) {
@@ -46,7 +46,7 @@ class Vuurtoren {
     
     // Teken de lichtkegel achter de toren als het donker is
     if (licht < 0.5) {
-      lichtkegels.displayAchter();
+      lamp.displayAchter();
     }
     
     // Teken de toren met rode en witte ringen
@@ -96,7 +96,7 @@ class Vuurtoren {
     
     // Teken de lichtkegel voor de vuurtoren
     if (licht < 0.5) {
-      lichtkegels.displayVoor();
+      lamp.displayVoor();
     }
   }
 }

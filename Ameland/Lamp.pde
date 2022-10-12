@@ -2,7 +2,7 @@ class Lamp {
   Lichtkegel links, rechts;
   float rotatie;
 
-  Lichtkegels(int lampX, int lampY, int lampHoogte) {
+  Lamp(int lampX, int lampY, int lampHoogte) {
     int breedte = 600;
     int straal = 60;
 
