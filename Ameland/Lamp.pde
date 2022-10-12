@@ -1,4 +1,4 @@
-class Lichtkegels {
+class Lamp {
   Lichtkegel links, rechts;
   float rotatie;
 
