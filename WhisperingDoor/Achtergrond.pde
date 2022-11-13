@@ -1,6 +1,8 @@
 class Achtergrond {
 
   color achtergrondKleur = #06B795;
+  color grondKleur = #EAD99A;
+  
   int aantalBomen = 6;
   int boomDikte = 30;
   Boom[] bomen;
@@ -22,5 +24,9 @@ class Achtergrond {
     for (int i = 0; i < this.aantalBomen; i++) {
       this.bomen[i].display();
     }
+    
+    noStroke();
+    fill(grondKleur);
+    rect(0, height - 150, width, height);
   }
 }
