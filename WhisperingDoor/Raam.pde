@@ -51,6 +51,6 @@ class Raam {
   }
   
   void mouseClicked() {
-    this.schakelLicht();
+    this.schakelLicht(); //<>// //<>//
   }
 }

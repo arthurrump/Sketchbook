@@ -42,10 +42,28 @@ class Huis {
     case 0:
       this.aantalRamen = 4;
       this.ramen = new Raam[] {
-        new Raam(this.x, this.y, 0.1 * this.breedte, 0.3 * this.hoogte, 0.15 * this.breedte, 0.5 * this.hoogte, #51B757),
-        new Raam(this.x, this.y, 0.25 * this.breedte, 0.3 * this.hoogte, 0.15 * this.breedte, 0.5 * this.hoogte, #51B757),
-        new Raam(this.x, this.y, 0.6 * this.breedte, 0.3 * this.hoogte, 0.15 * this.breedte, 0.5 * this.hoogte, #51B757),
-        new Raam(this.x, this.y, 0.75 * this.breedte, 0.3 * this.hoogte, 0.15 * this.breedte, 0.5 * this.hoogte, #51B757)
+        new Raam(this.x, this.y, 0.1 * this.breedte, 0.3 * this.hoogte, 0.15 * this.breedte, 0.5 * this.hoogte, #8CD8EA),
+        new Raam(this.x, this.y, 0.3 * this.breedte, 0.3 * this.hoogte, 0.15 * this.breedte, 0.5 * this.hoogte, #8CD8EA),
+        new Raam(this.x, this.y, 0.55 * this.breedte, 0.3 * this.hoogte, 0.15 * this.breedte, 0.5 * this.hoogte, #8CD8EA),
+        new Raam(this.x, this.y, 0.75 * this.breedte, 0.3 * this.hoogte, 0.15 * this.breedte, 0.5 * this.hoogte, #8CD8EA)
+      };
+      break;
+    case 1:
+      this.aantalRamen = 3;
+      this.ramen = new Raam[] {
+        new Raam(this.x, this.y, 0.2 * this.breedte, 0.4 * this.hoogte, 0.15 * this.breedte, 0.3 * this.hoogte, #9DBF7D),
+        new Raam(this.x, this.y, 0.65 * this.breedte, 0.4 * this.hoogte, 0.15 * this.breedte, 0.3 * this.hoogte, #9DBF7D),
+        new Raam(this.x, this.y, 0.45 * this.breedte, 0.45 * this.hoogte, 0.1 * this.breedte, 0.25 * this.hoogte, #F0DE3A)
+      };
+      break;
+    case 2:
+      this.aantalRamen = 5;
+      this.ramen = new Raam[] {
+        new Raam(this.x, this.y, 0.1 * this.breedte, 0.55 * this.hoogte, 0.15 * this.breedte, 0.35 * this.hoogte, #51B757),
+        new Raam(this.x, this.y, 0.3 * this.breedte, 0.55 * this.hoogte, 0.15 * this.breedte, 0.35 * this.hoogte, #51B757),
+        new Raam(this.x, this.y, 0.55 * this.breedte, 0.55 * this.hoogte, 0.15 * this.breedte, 0.35 * this.hoogte, #51B757),
+        new Raam(this.x, this.y, 0.75 * this.breedte, 0.55 * this.hoogte, 0.15 * this.breedte, 0.35 * this.hoogte, #51B757),
+        new Raam(this.x, this.y, 0.45 * this.breedte, 0.1 * this.hoogte, 0.1 * this.breedte, 0.3 * this.hoogte, #F0DE3A)
       };
       break;
     }
@@ -59,8 +77,8 @@ class Huis {
   }
 
   void mouseClicked(float muisX, float muisY) {
-    for (int i = 0; i < this.aantalRamen; i++) {
-      if (this.ramen[i].muisIsOver(muisX, muisY)) {
+    for (int i = 0; i < this.aantalRamen; i++) { //<>// //<>//
+      if (this.ramen[i].muisIsOver(muisX, muisY)) { //<>// //<>//
         this.ramen[i].mouseClicked();
       }
     }

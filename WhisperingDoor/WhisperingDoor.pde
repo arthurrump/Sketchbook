@@ -21,8 +21,15 @@ void draw() {
 }
 
 void mouseClicked() {
-  if (this.huizen.muisIsOver(mouseX, mouseY)) {
-  } else {
-    this.huizen.maakNieuwHuis();
-  } //<>//
+  if (mouseButton == LEFT) {
+    if (this.huizen.muisIsOver(mouseX, mouseY)) {
+      this.huizen.mouseClicked(mouseX, mouseY);
+    } else {
+      this.huizen.maakNieuwHuis();
+    }
+  } else if (mouseButton == RIGHT) {
+    if (this.huizen.muisIsOver(mouseX, mouseY)) {
+      this.huizen.mouseRightClicked(mouseX, mouseY);
+    }
+  } //<>// //<>//
 }
