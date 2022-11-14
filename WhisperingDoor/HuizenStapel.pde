@@ -31,8 +31,8 @@ class HuizenStapel {
   }
   
   void mouseClicked(float muisX, float muisY) {
-    for (int i = 0; i < this.huizen.size(); i++) { //<>// //<>//
-      if (this.huizen.get(i).muisIsOver(muisX, muisY)) { //<>// //<>//
+    for (int i = 0; i < this.huizen.size(); i++) { //<>//
+      if (this.huizen.get(i).muisIsOver(muisX, muisY)) { //<>//
         this.huizen.get(i).mouseClicked(muisX, muisY);
       }
     }
@@ -44,7 +44,7 @@ class HuizenStapel {
         Huis verwijderdHuis = this.huizen.remove(i);
         this.stapelHoogte -= verwijderdHuis.hoogte;
         for (int j = i; j < this.huizen.size(); j++) {
-          Huis h = this.huizen.get(i);
+          Huis h = this.huizen.get(j);
           h.doelY = h.doelY + verwijderdHuis.hoogte; 
         }
         break;

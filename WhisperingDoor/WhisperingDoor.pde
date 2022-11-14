@@ -31,5 +31,5 @@ void mouseClicked() {
     if (this.huizen.muisIsOver(mouseX, mouseY)) {
       this.huizen.mouseRightClicked(mouseX, mouseY);
     }
-  } //<>// //<>//
+  } //<>//
 }
