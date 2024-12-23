@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "serve": "npm run clean && node build.js serve",
+    "build": "npm run clean && node build.js build",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "p5": "^1.11.2"
+  },
+  "devDependencies": {
+    "@types/p5": "^1.7.6",
+    "esbuild": "^0.24.2",
+    "esbuild-plugin-copy": "^2.1.1",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2"
+  }
+}
