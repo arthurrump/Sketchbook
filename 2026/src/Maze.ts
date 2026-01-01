@@ -177,7 +177,7 @@ class MazeGrid {
     }
 
     neighbours(cell: number) {
-        return this.allNeighbours(cell).filter(this.getCell)
+        return this.allNeighbours(cell).filter(n => this.getCell(n))
     }
 
     getCell(cell: number) {
@@ -235,10 +235,17 @@ export class Maze {
     private playerPosition: number
     private playerMoving: "u" | "d" | "l" | "r" | undefined
     private playerLastMoved: number
+    private playerLastMovedRepeat: number
 
     private playerColor = color(250, 250, 250)
     private startPosition = (this.WIDTH - 1) / 2
     private endPosition = (this.HEIGHT - 1) * this.WIDTH + (this.WIDTH - 1) / 2
+
+    private bfsActive: boolean
+    private bfsLastStep: number
+    private queue: number[]
+    private parents: (number | undefined)[]
+    private path: number[]
 
     constructor() {
         this.visible = false
@@ -265,11 +272,51 @@ export class Maze {
 
         this.playerPosition = this.startPosition
         this.playerMoving = undefined
-        this.playerLastMoved = 0
+        this.playerLastMoved = 8000
+        this.playerLastMovedRepeat = 0
+
+        this.bfsActive = false
+        this.bfsLastStep = 0
+        this.queue = []
+        this.parents = []
+        this.path = []
     }
 
     setVisible(visible: boolean) {
         this.visible = visible
+    }
+
+    bfsStart() {
+        this.bfsActive = true
+        this.bfsLastStep = 0
+        this.queue = [ this.playerPosition ]
+        this.parents = new Array(this.WIDTH * this.HEIGHT).fill(undefined)
+        this.parents[this.playerPosition] = this.playerPosition
+        this.path = []
+    }
+
+    bfsStep() {
+        if (this.queue.length > 0) {
+            const current = this.queue.shift()!
+            if (current === this.endPosition) {
+                this.queue = []
+                this.path = [ this.endPosition ]
+            } else {
+                for (const n of this.grid.neighbours(current)) {
+                    if (this.parents[n] === undefined) {
+                        this.parents[n] = current
+                        this.queue.push(n)
+                    }
+                }
+            }
+        } else {
+            const pathTip = this.path[this.path.length - 1]
+            if (this.parents[pathTip] === this.playerPosition) {
+                this.playerPosition = this.path.pop()!
+            } else {
+                this.path.push(this.parents[pathTip]!)
+            }
+        }
     }
 
     restart() {
@@ -279,6 +326,8 @@ export class Maze {
         const tmp = this.startPosition
         this.startPosition = this.endPosition
         this.endPosition = tmp
+
+        if (this.bfsActive) this.bfsStart()
 
         colorMode(HSB, 100)
         this.playerColor = color(random(100), 100, 100)
@@ -290,7 +339,22 @@ export class Maze {
             this.opacity += 128 * deltaTime / 1000
         }
 
-        if (this.playerMoving !== undefined && millis() - this.playerLastMoved > 200) {
+        if (this.playerPosition == this.endPosition) {
+            this.restart()
+        }
+
+        if (this.bfsActive) {
+            if (this.playerMoving !== undefined) {
+                this.bfsActive = false
+            } else if (millis() - this.bfsLastStep > 100) {
+                this.bfsStep()
+                this.bfsLastStep = millis()
+            }
+        } else if (millis() - this.playerLastMoved > 10000) {
+            this.bfsStart()
+        }
+
+        if (this.playerMoving !== undefined && millis() - this.playerLastMovedRepeat > 200) {
             switch (this.playerMoving) {
                 case "u":
                     const above = this.grid.above(this.playerPosition)
@@ -315,8 +379,7 @@ export class Maze {
             }
 
             this.playerLastMoved = millis()
-            if (this.playerPosition == this.endPosition) 
-                this.restart()
+            this.playerLastMovedRepeat = millis()
         }
     }
 
@@ -336,6 +399,23 @@ export class Maze {
 
         fill(red(this.playerColor), green(this.playerColor), blue(this.playerColor), this.opacity)
         text("o", x(this.playerPosition), y(this.playerPosition))
+
+        if (this.bfsActive) {
+            for (let i = 0; i < this.WIDTH * this.HEIGHT; i++) {
+                if (i !== this.playerPosition) {
+                    if (this.path.includes(i)) {
+                        fill(250, 250, 250, 160 * this.opacity / 255)
+                        text("o", x(i), y(i))
+                    } else if (this.queue.includes(i)) {
+                        fill(250, 250, 250, 80 * this.opacity / 255)
+                        text("o", x(i), y(i))
+                    } else if (this.parents[i] !== undefined) {
+                        fill(250, 250, 250, 80 * this.opacity / 255)
+                        text("x", x(i), y(i))
+                    }
+                }
+            }
+        }
     }
 
     movingUp() {
@@ -356,6 +436,6 @@ export class Maze {
 
     stopMoving() {
         this.playerMoving = undefined
-        this.playerLastMoved = 0
+        this.playerLastMovedRepeat = 0
     }
 }
